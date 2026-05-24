@@ -36,3 +36,10 @@ pip install -r requirements.txt
 
 Create a .env file:
 GROQ_API_KEY=your_groq_api_key_here
+Run the dashboard:
+```bash
+python -m streamlit run dashboard/app.py
+```
+
+## Demo
+[Link to demo video]
