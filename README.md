@@ -1,35 +1,45 @@
-API Failure Detection & Debugging Agent
-An AI-powered agent that monitors API endpoints, detects failures and latency anomalies, identifies patterns, and generates plain-English debugging recommendations automatically.
-Problem It Solves
-Engineering teams often discover API failures only after users complain. Silent failures, latency spikes, and recurring errors go unnoticed until they cause real damage. This agent monitors continuously and explains what went wrong before users notice.
-Features-
-Real-time API endpoint monitoring
-Anomaly detection on response times and failure rates
-AI-generated plain English explanation of failures
-Debugging recommendations with likely root causes
-Live dashboard showing API health status
-Automatic alerts when failures are detected
+# API Failure Detection & Debugging Agent
 
+An AI-powered agent that monitors API endpoints in real-time, detects anomalies using machine learning, and generates plain-English debugging recommendations automatically.
 
-Tech Stack-
-Python, FastAPI
-Scikit-learn — Isolation Forest for anomaly detection
-OpenAI API — for generating debugging explanations
-Streamlit — frontend dashboard
-Docker — containerised deployment
-Python, FastAPI
-Scikit-learn — Isolation Forest for anomaly detection
-OpenAI API — for generating debugging explanations
-Streamlit — frontend dashboard
-Docker — containerised deployment
+## Problem It Solves
+Engineering teams discover API failures only after users complain. Silent failures, latency spikes, and 500 errors go unnoticed until real damage is done. This agent monitors continuously and explains what went wrong before users notice.
 
-How It Works
+## Features
+- Real-time monitoring of multiple API endpoints
+- Anomaly detection using Isolation Forest ML algorithm
+- AI-generated debugging recommendations via Groq LLaMA3
+- Live dashboard with response time charts
+- Automatic anomaly alerts with root cause analysis
+- Color coded API health status — Healthy, Warning, Critical
 
-Agent continuously pings monitored API endpoints
-Collects response time, status codes, and error messages
-Isolation Forest model detects anomalous behaviour
-LLM generates human readable explanation and fix recommendations
-Dashboard displays real time health and alert history
+## Tech Stack
+- Python
+- Scikit-learn — Isolation Forest for anomaly detection
+- Groq LLaMA3 — AI generated debugging explanations
+- Streamlit — live dashboard frontend
+- Httpx — async API monitoring
+- APScheduler — scheduled monitoring tasks
 
-Demo
+## How It Works
+1. Agent continuously pings monitored API endpoints every 15 seconds
+2. Collects response time and status codes
+3. Isolation Forest ML model detects anomalous behaviour
+4. Groq LLaMA3 generates plain English explanation and fix recommendations
+5. Dashboard displays real time health status and alert history
+
+## Setup
+
+```bash
+pip install -r requirements.txt
+```
+
+Create a .env file:
+GROQ_API_KEY=your_groq_api_key_here
+Run the dashboard:
+```bash
+python -m streamlit run dashboard/app.py
+```
+
+## Demo
 [Link to demo video]
