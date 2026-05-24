@@ -1,0 +1,13 @@
+fastapi
+uvicorn
+requests
+scikit-learn
+numpy
+pandas
+streamlit
+plotly
+openai
+python-dotenv
+httpx
+apscheduler
+groq
