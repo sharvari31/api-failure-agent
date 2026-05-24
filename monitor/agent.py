@@ -1,22 +1,33 @@
 import httpx
 import asyncio
-import random
 from datetime import datetime
 from monitor.detector import AnomalyDetector
 from groq import Groq
 import os
 from dotenv import load_dotenv
+from pathlib import Path
 
-load_dotenv()
+# Load env - works both locally and on Streamlit Cloud
+try:
+    import streamlit as st
+    GROQ_API_KEY = st.secrets["GROQ_API_KEY"]
+except Exception:
+    env_path = Path(__file__).parent.parent / ".env"
+    load_dotenv(dotenv_path=env_path)
+    GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 
-client = Groq(api_key=os.getenv("GROQ_API_KEY"))
+if not GROQ_API_KEY:
+    raise ValueError("GROQ_API_KEY not found.")
 
-# Sample APIs to monitor — these are real public APIs
+client = Groq(api_key=GROQ_API_KEY)
+
 MONITORED_APIS = [
     {"name": "JSONPlaceholder Posts", "url": "https://jsonplaceholder.typicode.com/posts/1"},
     {"name": "JSONPlaceholder Users", "url": "https://jsonplaceholder.typicode.com/users/1"},
     {"name": "HTTPBin Status", "url": "https://httpbin.org/status/200"},
     {"name": "HTTPBin Delay", "url": "https://httpbin.org/delay/1"},
+    {"name": "HTTPBin Slow API", "url": "https://httpbin.org/delay/3"},
+    {"name": "Failing API Simulation", "url": "https://httpbin.org/status/500"},
 ]
 
 detectors = {api["name"]: AnomalyDetector() for api in MONITORED_APIS}
@@ -32,7 +43,7 @@ async def check_api(api):
             response = await client_http.get(url)
             response_time = round((asyncio.get_event_loop().time() - start) * 1000, 2)
             status_code = response.status_code
-    except Exception as e:
+    except Exception:
         response_time = 9999
         status_code = 500
 
@@ -52,7 +63,6 @@ async def check_api(api):
 
     api_logs[name].append(log_entry)
 
-    # Keep only last 50 logs
     if len(api_logs[name]) > 50:
         api_logs[name] = api_logs[name][-50:]
 
